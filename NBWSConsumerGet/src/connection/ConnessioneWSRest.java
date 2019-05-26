@@ -39,8 +39,29 @@ public class ConnessioneWSRest {
         {
             switch(Integer.parseInt(scelta)){
                 case 1:
-                    webService.visualizzaUtenti();
+                    webService.stampaCalendari();
+                    
                     webService.printResult();
+                    System.out.println("Crea Nuovo Calendario");
+                    
+                    System.out.println("Nome Calendario");
+                    String NomeCalendario = br.readLine();
+                    
+                    System.out.println("Descrizione");
+                    String Descrizione = br.readLine();
+                    
+                    System.out.println("Tipologia");
+                    String Tipologia = br.readLine();
+                    
+                    System.out.println("Username");
+                    String username = br.readLine();
+                    
+                    int ritorno = webService.inserisciCalendario(NomeCalendario,Descrizione,Tipologia,username);
+                     if(ritorno == 200)
+                        System.out.println("Good");
+                    else
+                        System.out.println(ritorno);
+                    
                     break;
                 case 2:
                     System.out.println("Inserisci il nome");
@@ -57,11 +78,11 @@ public class ConnessioneWSRest {
                     
                     System.out.println("Inserisci la psw");
                     String psw = br.readLine();
-                                        
+                    
                     System.out.println("Inserisci la classe");
                     String classe = br.readLine();
                     
-                    int ritorno = webService.inserisciUtente(nome,cognome,mail,user,psw,classe);
+                    ritorno = 0;
                     if(ritorno == 200)
                         System.out.println("Inserimento effettuato");
                     else

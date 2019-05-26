@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entry>
 <calendario>
-<nome>SUCA</nome>
-<descrizione>CAZZONESOIO</descrizione>
-<tipologia>EVENTO</tipologia>
-<id>0</id>
-<us>a</us>
-</calendario>
-<calendario>
-<nome>SUCA</nome>
-<descrizione>CAZZONESOIO</descrizione>
-<tipologia>EVENTO</tipologia>
+<nome>f</nome>
+<descrizione>f</descrizione>
+<tipologia>f</tipologia>
 <id>1</id>
-<us>a</us>
+<us>A</us>
 </calendario>
 </entry>

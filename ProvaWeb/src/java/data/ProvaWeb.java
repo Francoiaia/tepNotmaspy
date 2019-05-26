@@ -243,7 +243,7 @@ public class ProvaWeb extends HttpServlet {
                 operazione = list.item(0).getFirstChild().getNodeValue();
             }
             
-            if(operazione.equals("inserisciUtente"))
+            if(operazione.equals("inserisciCalendario"))
             {
                 PrintWriter out = response.getWriter();
                 try
@@ -254,54 +254,51 @@ public class ProvaWeb extends HttpServlet {
                         nome = list.item(0).getFirstChild().getNodeValue();
                     }
                     
-                    list = root.getElementsByTagName("cognome");
-                    String cognome = null;
+                    list = root.getElementsByTagName("descrizione");
+                    String descrizione = null;
                     if (list != null && list.getLength() > 0) {
-                        cognome = list.item(0).getFirstChild().getNodeValue();
+                        descrizione = list.item(0).getFirstChild().getNodeValue();
                     }
                     
-                    list = root.getElementsByTagName("mail");
-                    String mail = null;
+                    list = root.getElementsByTagName("tipologia");
+                    String tipologia = null;
                     if (list != null && list.getLength() > 0) {
-                        mail = list.item(0).getFirstChild().getNodeValue();
+                        tipologia = list.item(0).getFirstChild().getNodeValue();
                     }
                     
-                    list = root.getElementsByTagName("user");
-                    String user = null;
+                    list = root.getElementsByTagName("id");
+                    String id = null;
                     if (list != null && list.getLength() > 0) {
-                        user = list.item(0).getFirstChild().getNodeValue();
+                        id = list.item(0).getFirstChild().getNodeValue();
                     }
                     
-                    list = root.getElementsByTagName("psw");
-                    String psw = null;
+                    list = root.getElementsByTagName("us");
+                    String us = null;
                     if (list != null && list.getLength() > 0) {
-                        psw = list.item(0).getFirstChild().getNodeValue();
+                        us = list.item(0).getFirstChild().getNodeValue();
                     }
                     
-                    list = root.getElementsByTagName("classe");
-                    String classe = null;
-                    if (list != null && list.getLength() > 0) {
-                        classe = list.item(0).getFirstChild().getNodeValue();
-                    }
+
                     
-                    if (nome == null || cognome == null || mail == null || user == null || psw == null) {
+                    if (nome == null || descrizione == null || tipologia == null || id == null || us == null) {
                         response.sendError(400, "Malformed XML!");
                         return;
                     }
-                    if (nome.isEmpty() || cognome.isEmpty() || mail.isEmpty() || user.isEmpty() || psw.isEmpty()) {
+                    if (nome.isEmpty() || descrizione.isEmpty() || tipologia.isEmpty() || id.isEmpty() || us.isEmpty()) {
                         response.sendError(400, "Malformed XML!");
                         return;
                     }
                     
                     try {
                         Statement statement = circolari.createStatement();
-                        String stringaSql = "INSERT INTO `utenti`(`Username`, `Nome`, `Cognome`, `Mail`, `Password`, `Classe`) VALUES ('"+user+"','"+nome+"','"+cognome+"','"+mail+"','"+psw+"','"+classe+"')";
+                        String stringaSql = "INSERT INTO `calendario`(`Nome`, `Descrizione`, `Tipologia`, `ID_Calendario`, `Username`) VALUES ('"+nome+"','"+descrizione+"','"+tipologia+"',"+null+",'"+us+")";
                         if (statement.executeUpdate(stringaSql) <= 0) {
                             statement.close();
                             return;
                         }
                         statement.close();
                     } catch (SQLException e) {
+                        System.out.println(e.toString());
                         response.sendError(500, "DBMS server error!");
                         return;
                     }

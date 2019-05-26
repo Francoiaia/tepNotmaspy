@@ -114,7 +114,7 @@ public class ConnessioneWSRestClient {
         return statusChiamata;
     }
     
-    public int visualizzaUtenti() throws ParserConfigurationException, SAXException
+    public int stampaCalendari() throws ParserConfigurationException, SAXException
     {
         try {
             //invio richiesta al web server
@@ -206,18 +206,17 @@ public class ConnessioneWSRestClient {
         return statusChiamata;
     }
     
-    public int inserisciUtente(String nome, String cognome, String mail, String user, String psw, String Classe) throws ParserConfigurationException, SAXException
+    public int inserisciCalendario(String nome, String descrizione, String tipologia, String us) throws ParserConfigurationException, SAXException
     {
         String doc = "<?xml version = \"1.0\" encoding= \"UTF-8\" ?>";
         
         doc += "<entry>\r\n";
-        doc += "<operazione>inserisciUtente</operazione>\r\n";
+        doc += "<operazione>inserisciCalendario</operazione>\r\n";
         doc += "<nome>" + nome + "</nome>\r\n";
-        doc += "<cognome>" + cognome + "</cognome>\r\n";
-        doc += "<mail>" + mail + "</mail>\r\n";
-        doc += "<user>" + user + "</user>\r\n";
-        doc += "<psw>" + psw + "</psw>\r\n";
-        doc += "<classe>" + Classe + "</classe>\r\n";
+        doc += "<descrizione>" + descrizione + "</descrizione>\r\n";
+        doc += "<tipologia>" + tipologia + "</tipologia>\r\n";
+        doc += "<id>" + null + "</id>\r\n";
+        doc += "<us>" + us + "</us>\r\n";
         doc += "</entry>\r\n";
         
         int n = doc.length();
