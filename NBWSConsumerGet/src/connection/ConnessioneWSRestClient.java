@@ -344,7 +344,49 @@ public class ConnessioneWSRestClient {
         }
         return statusChiamata;
     }
-    
+    public int aggiornaCalendario(String nome, String tipologia) throws ParserConfigurationException, SAXException
+    {
+        String doc = "<?xml version = \"1.0\" encoding= \"UTF-8\" ?>";
+
+        doc += "<entry>\r\n";
+        doc += "<operazione>aggiornaCalendario</operazione>\r\n";
+        doc += "<nome>" + nome + "</nome>\r\n";
+        doc += "<tipologia>" + tipologia + "</tipologia>\r\n";
+        doc += "</entry>\r\n";
+
+        int n = doc.length();
+
+        try {
+            //invio richiesta al web server
+
+            URL server = new URL(baseUrl);
+            HttpURLConnection service = (HttpURLConnection) server.openConnection();
+
+            service.setRequestProperty("Content-type", "application/xml");
+            service.setRequestProperty("Content-length", Integer.toString(n));
+
+            service.setDoOutput(true);
+            service.setRequestMethod("PUT");
+
+            BufferedWriter output = new BufferedWriter(new OutputStreamWriter(service.getOutputStream(), "UTF-8"));
+            output.write(doc);
+            output.flush();
+            output.close();
+
+            service.connect();
+
+            statusChiamata = service.getResponseCode();
+
+            return statusChiamata;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return statusChiamata;
+    }
     void printResult() {
         for(String a : valoriRichieste)
             System.out.println(a);

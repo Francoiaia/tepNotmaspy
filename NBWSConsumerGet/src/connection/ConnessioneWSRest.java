@@ -57,7 +57,7 @@ public class ConnessioneWSRest {
                     String username = br.readLine();
                     
                     int ritorno = webService.inserisciCalendario(NomeCalendario,Descrizione,Tipologia,username);
-                     if(ritorno == 200)
+                    if(ritorno == 200)
                         System.out.println("Good");
                     else
                         System.out.println(ritorno);
@@ -121,11 +121,27 @@ public class ConnessioneWSRest {
                     webService.printResult();
                     break;
                 case 5:
-                    String id;
-                    System.out.println("connection.ConnessioneWSRest.main()");
-                    id = br.readLine();
-                    webService.deleteCalendario(1);
+                    int id;
+                    
+                    id = br.read();
+                    webService.deleteCalendario(id);
                     webService.printResult();
+                    
+                    break;
+                case 6:
+                    System.out.println("Inserisci il Nome calendario");
+                    nome = br.readLine();
+                    
+                    System.out.println("Inserisci la nuova tipologia");
+                    tipologia = br.readLine();
+                    
+                    ritorno = webService.aggiornaCalendario(nome, tipologia);
+                    
+                    if(ritorno == 200)
+                        System.out.println("Inserimento effettuato");
+                    else
+                        System.out.println("Inserimento non effettuato");
+                    
                     
                     break;
                 default:
