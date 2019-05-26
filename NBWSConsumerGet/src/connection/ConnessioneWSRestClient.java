@@ -158,23 +158,39 @@ public class ConnessioneWSRestClient {
             Element root = document.getDocumentElement();
             valoriRichieste.clear();
             
-            NodeList list = root.getElementsByTagName("persona");
+            NodeList list = root.getElementsByTagName("calendario");
             if (list != null && list.getLength() > 0) {
                 for(int i = 0; i< list.getLength(); i++)
                 {
                     Element persona = (Element) list.item(i);
                     
-                    valoriRichieste.add("Utente:");
+                    valoriRichieste.add("Calendario:");
                     
                     NodeList nome = persona.getElementsByTagName("nome");
                     if (nome != null && nome.getLength() > 0) {
                         valoriRichieste.add(nome.item(0).getFirstChild().getNodeValue());
                     }
                     
-                    NodeList cognome = persona.getElementsByTagName("cognome");
-                    if (cognome != null && cognome.getLength() > 0) {
-                        valoriRichieste.add(cognome.item(0).getFirstChild().getNodeValue());
+                    NodeList descrizione = persona.getElementsByTagName("descrizione");
+                    if (descrizione != null && descrizione.getLength() > 0) {
+                        valoriRichieste.add(descrizione.item(0).getFirstChild().getNodeValue());
                     }
+
+                    NodeList tipologia = persona.getElementsByTagName("tipologia");
+                    if (tipologia != null && tipologia.getLength() > 0) {
+                        valoriRichieste.add(tipologia.item(0).getFirstChild().getNodeValue());
+                    }
+                    
+                    NodeList id = persona.getElementsByTagName("id");
+                    if (id != null && id.getLength() > 0) {
+                        valoriRichieste.add(id.item(0).getFirstChild().getNodeValue());
+                    }
+
+                    NodeList us = persona.getElementsByTagName("us");
+                    if (us != null && us.getLength() > 0) {
+                        valoriRichieste.add(us.item(0).getFirstChild().getNodeValue());
+                    }
+
                     
                     valoriRichieste.add("");
                 }

@@ -96,7 +96,7 @@ public class ProvaWeb extends HttpServlet {
             throws ServletException, IOException {
         
         String operazione;
-        String nome, cognome;
+        String nome, descrizione, tipologia, id, us;
         String url;
         String[] url_section;
         // verifica stato connessione a DBMS
@@ -127,7 +127,7 @@ public class ProvaWeb extends HttpServlet {
                 
                 Statement statement = circolari.createStatement();
                 
-                String sql = "SELECT Nome,Cognome FROM utenti";
+                String sql = "SELECT * FROM calendario";
                 ResultSet result = statement.executeQuery(sql);
                 
                 out.println("<entry>");
@@ -136,15 +136,35 @@ public class ProvaWeb extends HttpServlet {
                 {
                     if (result.next()) {
                         nome = result.getString(1);
-                        cognome = result.getString(2);
-                        out.println("<persona>");
+                        descrizione = result.getString(2);
+                        tipologia = result.getString(3);
+                        id = result.getString(4);
+                        us = result.getString(5);
+                                
+                        out.println("<calendario>");
+                        
                         out.print("<nome>");
                         out.print(nome);
                         out.println("</nome>");
-                        out.print("<cognome>");
-                        out.print(cognome);
-                        out.println("</cognome>");
-                        out.println("</persona>");
+                        
+                        out.print("<descrizione>");
+                        out.print(descrizione);
+                        out.println("</descrizione>");
+                        
+                        out.print("<tipologia>");
+                        out.print(tipologia);
+                        out.println("</tipologia>");
+
+                        out.print("<id>");
+                        out.print(id);
+                        out.println("</id>");
+
+                        out.print("<us>");
+                        out.print(us);
+                        out.println("</us>");
+                        
+                        
+                        out.println("</calendario>");
                     }
                     else
                         break;
