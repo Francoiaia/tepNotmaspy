@@ -291,7 +291,7 @@ public class ProvaWeb extends HttpServlet {
                     
                     try {
                         Statement statement = circolari.createStatement();
-                        String stringaSql = "INSERT INTO `calendario`(`Nome`, `Descrizione`, `Tipologia`, `ID_Calendario`, `Username`) VALUES ('"+nome+"','"+descrizione+"','"+tipologia+"',"+null+",'"+us+")";
+                        String stringaSql = "INSERT INTO `calendario`(`Nome`, `Descrizione`, `Tipologia`, `ID_Calendario`, `Username`) VALUES ('"+nome+"','"+descrizione+"','"+tipologia+"',"+null+",'"+us+"')";
                         if (statement.executeUpdate(stringaSql) <= 0) {
                             statement.close();
                             return;
