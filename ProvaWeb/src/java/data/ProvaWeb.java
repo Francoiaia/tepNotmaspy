@@ -7,6 +7,8 @@ package data;
 
 import java.sql.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.xml.parsers.*;
@@ -140,7 +142,7 @@ public class ProvaWeb extends HttpServlet {
                         tipologia = result.getString(3);
                         id = result.getString(4);
                         us = result.getString(5);
-                                
+                        
                         out.println("<calendario>");
                         
                         out.print("<nome>");
@@ -154,11 +156,11 @@ public class ProvaWeb extends HttpServlet {
                         out.print("<tipologia>");
                         out.print(tipologia);
                         out.println("</tipologia>");
-
+                        
                         out.print("<id>");
                         out.print(id);
                         out.println("</id>");
-
+                        
                         out.print("<us>");
                         out.print(us);
                         out.println("</us>");
@@ -278,7 +280,7 @@ public class ProvaWeb extends HttpServlet {
                         us = list.item(0).getFirstChild().getNodeValue();
                     }
                     
-
+                    
                     
                     if (nome == null || descrizione == null || tipologia == null || id == null || us == null) {
                         response.sendError(400, "Malformed XML!");
@@ -485,41 +487,62 @@ public class ProvaWeb extends HttpServlet {
     }
     
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name;
-        String url;
-        String[] url_section;
+        String operazione = "";
+        String line = "";
         
-        // verifica stato connessione a DBMS
         if (!connected) {
             response.sendError(500, "DBMS server error!");
             return;
         }
-        // estrazione nominativo da URL
-        url = request.getRequestURL().toString();
-        url_section = url.split("/");
-        name = url_section[url_section.length - 1];
-        if (name == null) {
-            response.sendError(400, "Request syntax error!");
-            return;
-        }
-        if (name.isEmpty()) {
-            response.sendError(400, "Request syntax error!");
-            return;
-        }
+        
         try {
-            Statement statement = circolari.createStatement();
-            if (statement.executeUpdate("DELETE FROM Phonebook WHERE Name = '" + name + "';") <= 0) {
-                response.sendError(404, "Entry not found!");
-                statement.close();
-                return;
+            
+            BufferedReader input = request.getReader();
+            BufferedWriter file = new BufferedWriter(new FileWriter("entry.xml"));
+            while ((line = input.readLine()) != null) {
+                file.write(line);
+                file.newLine();
             }
-            statement.close();
-            response.setStatus(204); // OK
+            input.close();
+            file.flush();
+            file.close();
+            
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse("entry.xml");
+            Element root = document.getDocumentElement();
+            
+            NodeList list = root.getElementsByTagName("operazione");
+            if (list != null && list.getLength() > 0) {
+                operazione = list.item(0).getFirstChild().getNodeValue();
+            }
+            
+            list = root.getElementsByTagName("id");
+            String id = null;
+            if (list != null && list.getLength() > 0) {
+                id = list.item(0).getFirstChild().getNodeValue();
+            }
+            if(operazione.equals("deletebyid")){
+                Statement statement = circolari.createStatement();
+                if (statement.executeUpdate("DELETE FROM calendario WHERE ID_Calendario = '" + id + "';") <= 0) {
+                    response.sendError(404, "Entry not found!");
+                    statement.close();
+                    return;
+                }
+                statement.close();
+                response.setStatus(204); // OK
+            }
+            
         } catch (SQLException e) {
             response.sendError(500, "DBMS server error!");
             return;
+        } catch (SAXException ex) {
+            Logger.getLogger(ProvaWeb.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(ProvaWeb.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     
     @Override
     public String getServletInfo() {

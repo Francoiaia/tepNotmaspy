@@ -175,7 +175,7 @@ public class ConnessioneWSRestClient {
                     if (descrizione != null && descrizione.getLength() > 0) {
                         valoriRichieste.add(descrizione.item(0).getFirstChild().getNodeValue());
                     }
-
+                    
                     NodeList tipologia = persona.getElementsByTagName("tipologia");
                     if (tipologia != null && tipologia.getLength() > 0) {
                         valoriRichieste.add(tipologia.item(0).getFirstChild().getNodeValue());
@@ -185,12 +185,12 @@ public class ConnessioneWSRestClient {
                     if (id != null && id.getLength() > 0) {
                         valoriRichieste.add(id.item(0).getFirstChild().getNodeValue());
                     }
-
+                    
                     NodeList us = persona.getElementsByTagName("us");
                     if (us != null && us.getLength() > 0) {
                         valoriRichieste.add(us.item(0).getFirstChild().getNodeValue());
                     }
-
+                    
                     
                     valoriRichieste.add("");
                 }
@@ -241,8 +241,8 @@ public class ConnessioneWSRestClient {
             service.connect();
             
             statusChiamata = service.getResponseCode();
-
-            return statusChiamata;            
+            
+            return statusChiamata;
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -289,8 +289,52 @@ public class ConnessioneWSRestClient {
             service.connect();
             
             statusChiamata = service.getResponseCode();
-
-            return statusChiamata;            
+            
+            return statusChiamata;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return statusChiamata;
+    }
+    
+    public int deleteCalendario(int id){
+        
+        
+        String doc = "<?xml version = \"1.0\" encoding= \"UTF-8\" ?>";
+        
+        doc += "<entry>\r\n";
+        doc += "<operazione>deletebyid</operazione>\r\n";
+        doc += "<id>" + id + "</id>\r\n";
+        doc += "</entry>\r\n";
+        
+        int n = doc.length();
+        
+        try {
+            //invio richiesta al web server
+            
+            URL server = new URL(baseUrl);
+            HttpURLConnection service = (HttpURLConnection) server.openConnection();
+            
+            service.setRequestProperty("Content-type", "application/xml");
+            service.setRequestProperty("Content-length", Integer.toString(n));
+            
+            service.setDoOutput(true);
+            service.setRequestMethod("DELETE");
+            
+            BufferedWriter output = new BufferedWriter(new OutputStreamWriter(service.getOutputStream(), "UTF-8"));
+            output.write(doc);
+            output.flush();
+            output.close();
+            
+            service.connect();
+            
+            statusChiamata = service.getResponseCode();
+            
+            return statusChiamata;
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(ConnessioneWSRestClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {

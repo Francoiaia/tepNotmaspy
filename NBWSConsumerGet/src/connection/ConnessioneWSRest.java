@@ -120,6 +120,14 @@ public class ConnessioneWSRest {
                     webService.ottieniOperazioniPossibili();
                     webService.printResult();
                     break;
+                case 5:
+                    String id;
+                    System.out.println("connection.ConnessioneWSRest.main()");
+                    id = br.readLine();
+                    webService.deleteCalendario(1);
+                    webService.printResult();
+                    
+                    break;
                 default:
             }
             
